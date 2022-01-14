@@ -13,10 +13,10 @@ class Run:
         print(logo)
 
         if (self.config_file is None) & (self.trigger_class is None):
-            raise Exception(f'Nothing to do. Please specify either --config_file or --trigger_class. Use ppline --help for more info.')
+            raise Exception(f'Nothing to do. Please specify either --config_file or --trigger_class. Use pipely --help for more info.')
 
         if (self.config_file is not None) & (self.trigger_class is not None):
-            raise Exception(f'Too many arguments. Choose either  --trigger_class or --config_file. Use ppline --help for more info.')
+            raise Exception(f'Too many arguments. Choose either  --trigger_class or --config_file. Use pipely --help for more info.')
 
         if (self.config_file is not None):
             path = self.config_file

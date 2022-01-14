@@ -15,5 +15,4 @@ parser.add_argument('--config_file', '-f', type=_arg_config_file, default=None, 
 # parser.add_argument('-gitlab', action='store_true', help='Specify if you want to generate .gitlab-ci file.yaml')
 
 args = parser.parse_args()
-
 Run(config_file=args.config_file, trigger_class=args.trigger_class)

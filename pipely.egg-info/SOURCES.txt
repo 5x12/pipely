@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.cfg
+setup.py
+pipely.egg-info/PKG-INFO
+pipely.egg-info/SOURCES.txt
+pipely.egg-info/dependency_links.txt
+pipely.egg-info/requires.txt
+pipely.egg-info/top_level.txt

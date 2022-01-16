@@ -11,7 +11,7 @@ The library `pipely` can execute any class or any sequance of classes in any ord
 
 ## 2.1. Declarative way
 
-To build a pipeline with classes to execute, you have to create a `config.yml` file in a *root* directory in the following form:
+To build a pipeline with classes to execute, you have to create a config `.yml` file in a *root* directory in the following form:
 
 ```text
 steps:
@@ -22,7 +22,7 @@ steps:
     [step_name_3]:
         exec: [relative path to a file]:[class to execute]
 ```
-Let's create a config.yml file with the name `collect.yml`:
+Let's create a config file with the name `collect.yml`:
 
 ```text
 steps:
@@ -36,7 +36,7 @@ steps:
             - preProcessing
             - kMeans
 ```
-Pipely will be able to automatically detect which steps would be done in parallel. In this case, it will execute steps `preProcessing` and `kMeans` in parallel, and then afterwards, start executing `hyperTuning`.
+Pipely will be able to automatically detect which steps are independent and could be done in parallel. In this case, it will execute steps `preProcessing` and `kMeans` in parallel, and right after they are finished, start executing `hyperTuning`.
 
 In order for the pipely to work,
 - the names of your [steps] in `collect.yml` should be unique;

@@ -2,6 +2,7 @@ import importlib.util as importutils
 import os
 from typing import Optional
 import json
+import inspect
 
 class ClassTrigger:
     def __init__(self, class_path: str, context_path: Optional[str]):
@@ -19,5 +20,9 @@ class ClassTrigger:
         spec.loader.exec_module(module)
         class_ = getattr(module, self.class_to_trigger)
         instance = class_()
-        context = json.load(self.context_path) if self.context_path else dict()
-        instance(context)
+        signature = inspect.signature(instance)
+        if len(signature.parameters) == 1:
+            context = json.load(self.context_path) if self.context_path else dict()
+            instance(context)
+        else:
+            instance()

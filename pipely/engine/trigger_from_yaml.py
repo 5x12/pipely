@@ -4,6 +4,7 @@ import yaml, copy, os
 import importlib.util as importutils
 
 from multiprocessing import Manager
+import inspect
 
 
 class YamlTrigger:
@@ -59,7 +60,11 @@ class YamlTrigger:
         spec.loader.exec_module(module)
         class_ = getattr(module, class_name)
         instance = class_()
-        instance(context)
+        signature = inspect.signature(instance)
+        if len(signature.parameters) == 1:
+            instance(context)
+        else:
+            instance()
 
         ## [PLACEHOLDER]
         ## respond upon completion for dashboard

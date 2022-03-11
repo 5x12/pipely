@@ -5,6 +5,6 @@ steps:
         exec: src/B.py:B
     m3:
         exec: src/C.py:C
-        depends_on: 
+        depends_on:
             - m1
             - m2

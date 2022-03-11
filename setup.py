@@ -23,7 +23,7 @@ setuptools.setup(
    long_description=long_description,
    license='MIT',
    long_description_content_type='text/markdown',
-   packages=setuptools.find_packages(),
+   packages=['pipely', 'pipely.config', 'pipely.engine'],
    install_requires=['mpire', 'pyyaml'],
    keywords = ['PIPELY', 'PIPELINE', 'PIPE'],
    python_requires='>=3.8',

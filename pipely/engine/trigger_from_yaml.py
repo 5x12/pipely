@@ -2,7 +2,7 @@ from pipely.config.config import logging
 from mpire import WorkerPool
 import yaml, copy, sys, os
 
-class triggerYaml(object):
+class YamlTrigger:
     def __init__(self, path: str):
         """Takes config path and sets the root directory where it exists.
         """
@@ -29,10 +29,10 @@ class triggerYaml(object):
         logging.info(f' \t PIPELY is searching for modules that can be executed in parallel.')
         d = d['steps']
         d_new = copy.deepcopy(d)
-        
+
         done = []
         steps = []
-        
+
         for key, _ in d.items():
             step = []
             if ('depends_on' not in d[key].keys() or d_new[key]['depends_on'] == set()) and key not in done:
@@ -48,15 +48,15 @@ class triggerYaml(object):
             if step != []:
                 steps.append(step)
         return steps
-         
+
     def _get_parsed(self, path_to_class):
         """Parses the class and path to the file from "path_to_file/file.py:Class".
         """
         _file = path_to_class.split(':')[0][:-3].replace('/', '.')
         _class = path_to_class.split(':')[1]
         return _file, _class
-    
-    def execute(self, path_to_class):
+
+    def do(self, path_to_class):
         """Executes the class.
         """
         _file, _class = self._get_parsed(path_to_class)
@@ -68,7 +68,7 @@ class triggerYaml(object):
         ## respond upon completion for dashboard
         ##
 
-    def __call__(self):
+    def execute(self):
         d = self.read_yaml(self.path)
         steps = self.make_steps(d)
 
@@ -77,5 +77,5 @@ class triggerYaml(object):
             scripts = [d['steps'][x]['exec'] for x in step]
             logging.info(f' --> NEXT IN PROGRESS: Step(s) {step} \n \t \t \t \t Script(s) {scripts}')
             process_pool = WorkerPool(n_jobs = len(step))
-            process_pool.map(self.execute, scripts)
+            process_pool.map(self.do, scripts)
             logging.info(f' --> DONE: Script(s) {scripts} finished.')

@@ -8,6 +8,3 @@ class B:
 
     def __call__(self):
         self.run()
-
-# if __name__ == '__main__':
-#     B()()

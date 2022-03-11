@@ -8,4 +8,3 @@ class A:
 
     def __call__(self):
         self.run()
-    

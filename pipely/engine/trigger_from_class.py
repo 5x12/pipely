@@ -22,7 +22,8 @@ class ClassTrigger:
         instance = class_()
         signature = inspect.signature(instance)
         if len(signature.parameters) == 1:
-            context = json.load(self.context_path) if self.context_path else dict()
+            with open(self.context_path, 'r') as fp:
+                context = json.load(fp)
             instance(context)
         else:
             instance()

@@ -24,14 +24,14 @@ setuptools.setup(
    license='MIT',
    long_description_content_type='text/markdown',
    packages=['pipely', 'pipely.config', 'pipely.engine'],
-   install_requires=['mpire', 'pyyaml'],
+   install_requires=['mpire', 'pyyaml', 'typer'],
    keywords = ['PIPELY', 'PIPELINE', 'PIPE'],
    python_requires='>=3.8',
    include_package_data=True,
    classifiers=[
-    'Development Status :: 3 - Alpha',   
-    'Intended Audience :: Developers',      
-    'License :: OSI Approved :: MIT License',   
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
     'Programming Language :: Python :: 3.6',
   ],
 )

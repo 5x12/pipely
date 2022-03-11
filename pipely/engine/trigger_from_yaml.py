@@ -1,17 +1,12 @@
 from pipely.config.config import logging
 from mpire import WorkerPool
 import yaml, copy, sys, os
-
+import importlib.util as importutils
 class YamlTrigger:
     def __init__(self, path: str):
         """Takes config path and sets the root directory where it exists.
         """
         self.path = path
-        try:
-            print(sys.path.append(str(os.path.abspath(f'{path}/..'))))
-            sys.path.append(str(os.path.abspath(f'{path}/..')))
-        except OSError as err:
-            print(err)
 
     def read_yaml(self, path: str) -> dict:
         '''Reads yaml configuration file.
@@ -49,20 +44,18 @@ class YamlTrigger:
                 steps.append(step)
         return steps
 
-    def _get_parsed(self, path_to_class):
-        """Parses the class and path to the file from "path_to_file/file.py:Class".
-        """
-        _file = path_to_class.split(':')[0][:-3].replace('/', '.')
-        _class = path_to_class.split(':')[1]
-        return _file, _class
-
     def do(self, path_to_class):
         """Executes the class.
         """
-        _file, _class = self._get_parsed(path_to_class)
-        exec(f'from {_file} import {_class}')
-        exec(f'c = {_class}()')
-        exec(f'c()')
+        file_name = path_to_class.rsplit(':')[0]
+        class_name = path_to_class.rsplit(':')[1]
+
+        spec = importutils.spec_from_file_location("mdl", file_name)
+        module = importutils.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        class_ = getattr(module, class_name)
+        instance = class_()
+        instance()
 
         ## [PLACEHOLDER]
         ## respond upon completion for dashboard
@@ -71,10 +64,12 @@ class YamlTrigger:
     def execute(self):
         d = self.read_yaml(self.path)
         steps = self.make_steps(d)
-
+        pipe_root = os.path.dirname(self.path)
         logging.info(f' \t PIPELY has picked up the tasks.')
         for step in steps:
-            scripts = [d['steps'][x]['exec'] for x in step]
+            scripts = [
+                os.path.join(pipe_root, d['steps'][x]['exec'])
+                for x in step]
             logging.info(f' --> NEXT IN PROGRESS: Step(s) {step} \n \t \t \t \t Script(s) {scripts}')
             process_pool = WorkerPool(n_jobs = len(step))
             process_pool.map(self.do, scripts)

@@ -1,12 +1,17 @@
+import importlib.util as importutils
+import os
+
 class ClassTrigger:
-    def __init__(self, path_to_file: str, class_to_trigger: str):
-        self.path_to_file = path_to_file
-        self.class_to_trigger = class_to_trigger
+    def __init__(self, class_path: str):
+        self.path_to_file = class_path.rsplit(":")[0]
+        self.class_to_trigger = class_path.rsplit(":")[1]
+        if not os.path.exists(self.path_to_file):
+            raise Exception(f'Cannot find {self.path_to_file}.')
 
     def execute(self):
-        _file=self.path_to_file.split(':')[0][:-3].replace('/', '.')
-        _class = self.class_to_trigger
-
-        exec(f'from {_file} import {_class}')
-        exec(f'c = {_class}()')
-        exec(f'c()')
+        spec = importutils.spec_from_file_location("mdl", self.path_to_file)
+        module = importutils.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        class_ = getattr(module, self.class_to_trigger)
+        instance = class_()
+        instance()

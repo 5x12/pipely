@@ -1,0 +1,10 @@
+steps:
+    m1:
+        exec: src/A1.py:A
+    m2:
+        exec: src/B1.py:B
+    m3:
+        exec: src/C1.py:C
+        depends_on:
+            - m1
+            - m2

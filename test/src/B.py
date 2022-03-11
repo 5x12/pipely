@@ -6,5 +6,5 @@ class B:
             time.sleep(2)
             print(f'2.py ... step {i}')
 
-    def __call__(self):
+    def __call__(self, context):
         self.run()

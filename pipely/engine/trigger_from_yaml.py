@@ -1,7 +1,11 @@
 from pipely.config.config import logging
 from mpire import WorkerPool
-import yaml, copy, sys, os
+import yaml, copy, os
 import importlib.util as importutils
+
+from multiprocessing import Manager
+
+
 class YamlTrigger:
     def __init__(self, path: str):
         """Takes config path and sets the root directory where it exists.
@@ -44,7 +48,7 @@ class YamlTrigger:
                 steps.append(step)
         return steps
 
-    def do(self, path_to_class):
+    def do(self, context, path_to_class):
         """Executes the class.
         """
         file_name = path_to_class.rsplit(':')[0]
@@ -55,7 +59,7 @@ class YamlTrigger:
         spec.loader.exec_module(module)
         class_ = getattr(module, class_name)
         instance = class_()
-        instance()
+        instance(context)
 
         ## [PLACEHOLDER]
         ## respond upon completion for dashboard
@@ -66,11 +70,13 @@ class YamlTrigger:
         steps = self.make_steps(d)
         pipe_root = os.path.dirname(self.path)
         logging.info(f' \t PIPELY has picked up the tasks.')
+        context = Manager().dict()
         for step in steps:
             scripts = [
                 os.path.join(pipe_root, d['steps'][x]['exec'])
                 for x in step]
             logging.info(f' --> NEXT IN PROGRESS: Step(s) {step} \n \t \t \t \t Script(s) {scripts}')
-            process_pool = WorkerPool(n_jobs = len(step))
-            process_pool.map(self.do, scripts)
-            logging.info(f' --> DONE: Script(s) {scripts} finished.')
+            with WorkerPool(n_jobs = len(step)) as process_pool:
+                process_pool.set_shared_objects(context)
+                process_pool.map(self.do, scripts)
+                logging.info(f' --> DONE: Script(s) {scripts} finished.')

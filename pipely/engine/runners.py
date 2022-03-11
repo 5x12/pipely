@@ -1,7 +1,7 @@
 
-import os
 from pipely.engine import YamlTrigger, ClassTrigger
 from pipely.config.config import logo
+from typing import Optional
 
 class FromPipe:
     def __init__(self, pipe_file: str) -> None:
@@ -12,9 +12,10 @@ class FromPipe:
         YamlTrigger(self.pipe_file).execute()
 
 class FromClass:
-    def __init__(self, class_path: str) -> None:
+    def __init__(self, class_path: str, context_path: Optional[str]) -> None:
         self.class_path = class_path
+        self.context_path = context_path
 
     def run(self):
         print(logo)
-        ClassTrigger(self.class_path).execute()
+        ClassTrigger(self.class_path, self.context_path).execute()

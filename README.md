@@ -5,7 +5,7 @@ pip install pipely
 
 # 1. About
 
-The library `pipely` can execute any class or any sequance of classes in any order.
+The library `pipely` can execute any class or any sequence of classes in any order.
 
 # 2. How it works
 
@@ -32,7 +32,7 @@ steps:
         exec: src/models.py:Kmeans
     hyperTuning:
         exec: src/tuning.py:GridSearch
-        depends_on: 
+        depends_on:
             - preProcessing
             - kMeans
 ```
@@ -40,7 +40,7 @@ Pipely will be able to automatically detect which steps are independent and coul
 
 In order for the pipely to work,
 - the names of your [steps] in `collect.yml` should be unique;
-- the executable classes should have a ``__call__`` method. For instance, if we open `src/calculation.py` and look at `Calculate` class that we trigger, we see __call__ method in the end.
+- the executable classes should have a ``__call__`` method. For instance, if we open `src/calculation.py` and look at `Calculate` class that we trigger, we see __call__ method in the end. It's possible to add an argument to ``__call__``. The said argument is used by pipely to share a dictionary between classes, thus permitting simple value transmission from class to class.
 
 ```python
 #src/calculation.py
@@ -58,29 +58,30 @@ class Calculate(object):
     def show_result(self):
             print(self.d)
 
-	def __call__(self):
+	def __call__(self): # or __call__(self, context): ### if some value exchange is needed
 		self.sum()
 		self.divide()
+        # context['calcul_result'] = self.d ### to use the result in an other class
         self.show_result()
 ```
 
 After creating a configuration .yml file in your root directory, use the following command to trigger the pipeline in terminal:
 
 ```bash
-python -m pipely.cli --config_file collect.yml
+python -m pipely from-pipeline collect.yml
 ```
 
 ## 2.2. Imperative way
 Pipely can also trigger a specific class from a specific .py file.
 
 ```bash
-python -m pipely.cli --trigger_class path/to/file.py:TestClass
+python -m pipely from-class path/to/file.py:TestClass
 ```
 
 Below is an example of command that triggers a `Calculate` class from `src/calculation.py` file.
 
 ```bash
-python -m pipely.cli --trigger_class src/calculation.py:Calculate
+python -m pipely from-class src/calculation.py:Calculate
 ```
 
 Again, `Calculate` class should have a `__call__` method that executes desired class functions.

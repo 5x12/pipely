@@ -85,3 +85,10 @@ python -m pipely from-class src/calculation.py:Calculate
 ```
 
 Again, `Calculate` class should have a `__call__` method that executes desired class functions.
+
+If your class need to operate on a a shared dictionary, the command from-class could use an optional second argument.
+This argument await a path to a json representing the shared dictionary.
+
+```bash
+python -m pipely from-class src/calculation.py:Calculate src/context.json
+```

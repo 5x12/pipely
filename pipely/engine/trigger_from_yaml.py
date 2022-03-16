@@ -1,11 +1,13 @@
-from pipely.config.config import logging
-from mpire import WorkerPool
-import yaml, copy, os
-import importlib.util as importutils
-
-from multiprocessing import Manager
+import os
+import copy
 import inspect
+import importlib.util as importutils
+from multiprocessing import Manager
 
+import yaml
+from mpire import WorkerPool
+
+from pipely.config.config import logging
 
 class YamlTrigger:
     def __init__(self, path: str):
@@ -13,7 +15,8 @@ class YamlTrigger:
         """
         self.path = path
 
-    def read_yaml(self, path: str) -> dict:
+    @staticmethod
+    def read_yaml(path: str) -> dict:
         '''Reads yaml configuration file.
         '''
         with open(path, "r") as stream:
@@ -21,12 +24,14 @@ class YamlTrigger:
                 return yaml.safe_load(stream)
             except yaml.YAMLError as err:
                 print(err)
+                return None
 
-    def make_steps(self, d: dict) -> list:
+    @staticmethod
+    def make_steps(d: dict) -> list:
         '''Makes list of lists. Each list represents modules that can be executed in parallel.
         '''
-        logging.info(f' \t PIPELY is building the pipeline.')
-        logging.info(f' \t PIPELY is searching for modules that can be executed in parallel.')
+        logging.info(' \t PIPELY is building the pipeline.')
+        logging.info(' \t PIPELY is searching for modules that can be executed in parallel.')
         d = d['steps']
         d_new = copy.deepcopy(d)
 
@@ -49,7 +54,8 @@ class YamlTrigger:
                 steps.append(step)
         return steps
 
-    def do(self, context, path_to_class):
+    @staticmethod
+    def do(context, path_to_class):
         """Executes the class.
         """
         file_name = path_to_class.rsplit(':')[0]
@@ -74,7 +80,7 @@ class YamlTrigger:
         d = self.read_yaml(self.path)
         steps = self.make_steps(d)
         pipe_root = os.path.dirname(self.path)
-        logging.info(f' \t PIPELY has picked up the tasks.')
+        logging.info(' \t PIPELY has picked up the tasks.')
         context = Manager().dict()
         for step in steps:
             scripts = [

@@ -33,8 +33,8 @@ Then trigger the pipeline in cli:
 python -m pipely from-pipeline <file.yml> [dict.json]
 ```
 
-- `<file.yml>` (a required argument) is the path to a yaml config file. Supports any format: `../../file.yml`, or `path/to/file.yml`, or `file.yml`.
-- `[dict.json]` (an optional argument) is the path to a `json` file (a shared dictionary) if value exchange between classes is needed (more in sec 1.2.)
+> - `<file.yml>` (a required argument) is the path to a yaml config file. Supports any format: `../../file.yml`, or `path/to/file.yml`, or `file.yml`.
+> - `[dict.json]` (an optional argument) is the path to a `json` file (a shared dictionary) if value exchange between classes is needed (more in sec 1.2.)
 
 
 <!-- > - it's possible to add an argument to ``__call__``, which is used by pipely to share a dictionary between classes, thus permitting simple value transmission from class to class (see example below); -->

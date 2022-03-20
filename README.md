@@ -64,7 +64,7 @@ steps:
 Let's look at classes in the first 2 steps:
 
 ```python
-#test/src/file1.py
+#example/src/file1.py
 
 class firstA:
     def run(self):
@@ -114,10 +114,10 @@ steps:
 2. then `a_sum` sums up both a's
 3. finally, `a_sum_print` prints the final result
 
-Let's look at classes in the first 2 steps (you can check them in `test/` folder):
+Let's look at classes in the first 2 steps (you can check them in `example/` folder):
 
 ```python
-#src/file1_shared.py
+#example/src/file1_shared.py
 
 class firstA:
     def run(self):
@@ -140,7 +140,7 @@ class secondA:
 Now we can use `a1` and `a2` in another class: 
 
 ```python
-#src/file2_shared.py
+#example/src/file2_shared.py
 
 class aSum:
     def run(self):

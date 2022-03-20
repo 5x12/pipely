@@ -1,7 +1,7 @@
 To install the library:
 ```bash
 pip install pipely
-```
+``` 
 
 # 1. About
 

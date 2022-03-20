@@ -4,10 +4,7 @@ To install the library:
 pip install pipely
 ```
 
-# 1. Declarative way
-First way is to create `yaml` file with the order of classes.
-
-## 1.1. Quick Start
+# 1. Quick Start
 
 To build a pipeline with executable classes, create a config `.yml` file:
 
@@ -41,7 +38,7 @@ python -m pipely from-pipeline <file.yml> [dict.json]
 > - it's possible to add an argument to ``__call__`` The said argument is used by pipely to share a dictionary between classes, thus permitting simple value transmission from class to class (see example below);
 > - able to detect independent steps and execute them in parallel;
 
-## 1.2. Example
+## 1.1. Example
 
 Let's create a `test.yml` config file with three steps:
 
@@ -89,7 +86,7 @@ python -m pipely from-pipeline test.yml
 ```
 
 
-## 1.3. Example w/ shared dictionary
+## 1.2. Example w/ shared dictionary
 
 Let's create a `testContext.yml` config file:
 

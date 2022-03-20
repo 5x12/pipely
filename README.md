@@ -6,7 +6,7 @@ pip install pipely
 
 # 1. Quick Start
 
-To build a pipeline with executable classes, create a config `.yml` file:
+To build a pipeline with executable classes, create a config `.yml` file in the following format:
 
 ```text
 steps:
@@ -20,27 +20,28 @@ steps:
         - [step_name_1]
         - [step_name_2]
 ```
+
+> - names of `[steps]` should be unique;
+> - the executable classes should have a ``__call__`` method (see example below);
+> - with `depends_on`, pipely is able to detect independent steps and execute them in parallel;
+
+
+
 Then trigger the pipeline in cli:
 
 ```bash
 python -m pipely from-pipeline <file.yml> [dict.json]
 ```
 
-- `<file.yml>` (a required argument) is the path to a yaml config file. Supports any format:
-   - `../../file.yml`
-   - `path/to/file.yml`
-   - `file.yml`
-- `[dict.json]` (an optional argument) is the path to a `json` file (a shared dictionary) if value exchange between classes is needed.
+- `<file.yml>` (a required argument) is the path to a yaml config file. Supports any format: `../../file.yml`, or `path/to/file.yml`, or `file.yml`.
+- `[dict.json]` (an optional argument) is the path to a `json` file (a shared dictionary) if value exchange between classes is needed (more in sec 1.2.)
 
-> Few other notes: 
-> - names of [steps] in `file.yml` should be unique;
-> - the executable classes should have a ``__call__`` method (see example below);
-> - it's possible to add an argument to ``__call__`` The said argument is used by pipely to share a dictionary between classes, thus permitting simple value transmission from class to class (see example below);
-> - able to detect independent steps and execute them in parallel;
+
+<!-- > - it's possible to add an argument to ``__call__``, which is used by pipely to share a dictionary between classes, thus permitting simple value transmission from class to class (see example below); -->
 
 ## 1.1. Example
 
-Let's create a `test.yml` config file with three steps:
+Let's create a `test.yml` config file:
 
 ```text
 steps:
@@ -54,11 +55,11 @@ steps:
         - a_print
         - b_print
 ```
-
-1. first, `a1_print` and `a2_print` are executed in parallel
+Because of `depends_on` parameter:
+1. firstly, `a1_print` and `a2_print` are executed in parallel
 2. only then `final_print` is executed
 
-Let's look at classes in the first 2 steps:
+Let's look at `firstA`, `secondA` and `printDone` classes (you can check them in `example/` folder) and ensure that each has a `__call__` method without which pipely won't work:
 
 ```python
 #example/src/file1.py
@@ -79,8 +80,18 @@ class secondA:
     def __call__(self):
         self.run()
 ```
+```python
+#example/src/file2.py
 
-Then trigger the pipeline in cli:
+class printDone:
+    def run(self):
+        print("Done.")
+
+    def __call__(self):
+        self.run()
+```
+
+Then trigger the pipeline in cli with:
 ```bash
 python -m pipely from-pipeline test.yml
 ```
@@ -108,7 +119,7 @@ steps:
 ```
 
 1. first, `a_first` and `a_second` are executed in parallel
-2. then `a_sum` sums up both a's
+2. then `a_sum` sums up both a's in the previous steps
 3. finally, `a_sum_print` prints the final result
 
 Let's look at classes in the first 2 steps (you can check them in `example/` folder):
@@ -140,7 +151,7 @@ Now we can use `a1` and `a2` in another class:
 #example/src/file2_shared.py
 
 class aSum:
-    def run(self):
+    def run(self, context):
         a1 = context["a1"] #extracting from shared dictionary
         a2 = context["a2"] #extracting from shared dictionary
         self.result = a1 + a2

@@ -1,10 +1,10 @@
 steps:
-    m1:
-        exec: src/A.py:A
-    m2:
-        exec: src/B.py:B
-    m3:
-        exec: src/C.py:C
+    a1_print:
+        exec: src/file1.py:firstA
+    a2_print:
+        exec: src/file1.py:secondA
+    final_print:
+        exec: src/file2.py:printDone
         depends_on:
-            - m1
-            - m2
+        - a1_print
+        - a2_print

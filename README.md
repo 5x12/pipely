@@ -1,5 +1,4 @@
-The library `pipely` can execute any class or any sequence of classes in any order. 
-To install the library:
+The light pipeline library `pipely` can execute any class or any sequence of classes in any order. Install with:
 ```bash
 pip install pipely
 ```
@@ -185,6 +184,5 @@ python3 -m pipely from-class src/file4.py:printDone
 If your class needs to operate on a shared dictionary, the command `from-class` could use an optional second argument `--context-path`. This argument awaits a path to a json representing the shared dictionary.
 
 ```bash
-python -m pipely from-class src/file4.py:printShared
- --context-path example_context.json
+python -m pipely from-class src/file4.py:printShared --context-path example_context.json
 ```

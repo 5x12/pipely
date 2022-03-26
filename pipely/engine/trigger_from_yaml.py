@@ -4,16 +4,20 @@ import inspect
 import importlib.util as importutils
 from multiprocessing import Manager
 
+import json
 import yaml
 from mpire import WorkerPool
 
 from pipely.config.config import logging
 
+from typing import Optional
+
 class YamlTrigger:
-    def __init__(self, path: str):
+    def __init__(self, pipeline_path: str, context_path: Optional[str]):
         """Takes config path and sets the root directory where it exists.
         """
-        self.path = path
+        self.pipeline_path = pipeline_path
+        self.context_path = context_path
 
     @staticmethod
     def read_yaml(path: str) -> dict:
@@ -77,11 +81,14 @@ class YamlTrigger:
         ##
 
     def execute(self):
-        d = self.read_yaml(self.path)
+        d = self.read_yaml(self.pipeline_path)
         steps = self.make_steps(d)
-        pipe_root = os.path.dirname(self.path)
+        pipe_root = os.path.dirname(self.pipeline_path)
         logging.info(' \t PIPELY has picked up the tasks.')
         context = Manager().dict()
+        if self.context_path:
+            with open(self.context_path, 'r') as fp:
+                    context.update(json.load(fp))
         for step in steps:
             scripts = [
                 os.path.join(pipe_root, d['steps'][x]['exec'])

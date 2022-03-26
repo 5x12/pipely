@@ -1,9 +1,9 @@
 import setuptools
 
 PACKAGE_NAME='pipely'
-PACKAGE_AUTHOR='5x12, sergbakh, notrurs'
+PACKAGE_AUTHOR='5x12, sergbakh, notrurs, benoitconnan'
 PACKAGE_AUTHOR_EMAIL='contact@awolf.io'
-PACKAGE_DESCR='Pipeline framework.'
+PACKAGE_DESCR='Light pipeline framework.'
 
 try:
     from pipely.version import __version__ as version

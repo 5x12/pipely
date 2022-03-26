@@ -21,7 +21,7 @@ steps:
 ```
 
 > - `[steps]` names should be unique;
-> - `depends_on` defines the order and enable pipely to detect independent steps and execute them in parallel;
+> - `depends_on` defines order and enables pipely to detect independent steps and execute them in parallel;
 > - the executable classes should have a ``__call__`` method (see example below);
 
 
@@ -32,8 +32,8 @@ Then trigger the pipeline in cli:
 python -m pipely from-pipeline <file.yaml> [dict.json]
 ```
 
-> - `<file.yaml>` (a required argument) is the path to a yaml config file. Supports any format: `../../file.yaml`, or `path/to/file.yaml`, or `file.yaml`.
-> - `[dict.json]` (an optional argument) is the path to a `json` file (a shared dictionary) if value exchange between classes is needed (more in sec 1.2.)
+> - `<file.yaml>` (required) is the path to a yaml config file (any format): `../../file.yaml`, or `path/to/file.yaml`, or `file.yaml`.
+> - `[dict.json]` (optional argument) is the path to a shared dictionary `json` file if value exchange between classes is needed (more in Section 1.2.)
 
 
 <!-- > - it's possible to add an argument to ``__call__``, which is used by pipely to share a dictionary between classes, thus permitting simple value transmission from class to class (see example below); -->
@@ -97,7 +97,7 @@ python -m pipely from-pipeline test.yaml
 ```
 
 
-## 1.2. Example w/ shared dictionary
+## 1.2. Example w/ a shared dictionary
 
 Let's create a [`testContext.yaml`](example/testContext.yaml) config file:
 

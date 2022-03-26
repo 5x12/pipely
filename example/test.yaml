@@ -1,0 +1,10 @@
+steps:
+    a1_print:
+        exec: src/file1.py:firstA
+    a2_print:
+        exec: src/file1.py:secondA
+    final_print:
+        exec: src/file2.py:printDone
+        depends_on:
+        - a1_print
+        - a2_print

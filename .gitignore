@@ -1,3 +1,21 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+.vscode
+.venv
+.pytest_cache
+
+# Jupyter stuff
 Untitled.ipynb
+
+# Mac Stuff
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Ignore build stuff
+*egg-info
+/build
+/.pylint.d
+/.spyproject

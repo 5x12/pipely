@@ -1,0 +1,14 @@
+steps:
+    a_first:
+        exec: src/file1_shared.py:firstA
+    a_second:
+        exec: src/file1_shared.py:secondA
+    a_sum:
+        exec: src/file2_shared.py:aSum
+        depends_on:
+        - a_first
+        - a_second
+    a_sum_print:
+        exec: src/file3_shared.py:aSumPrint
+        depends_on:
+            - a_sum

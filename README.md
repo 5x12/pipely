@@ -1,3 +1,6 @@
+[![PyPI Latest Release](https://img.shields.io/pypi/v/pipely.svg)](https://pypi.org/project/pipely/)
+![Build](https://img.shields.io/github/checks-status/5x12/pipely/0.3.0)
+
 The light pipeline library `pipely` can execute any class or any sequence of classes in any order. Install with:
 ```bash
 pip install pipely

@@ -172,15 +172,15 @@ python -m pipely from-pipeline testContext.yaml --context-path example_context.j
 ```
 
 # 2. Imperative way
-Pipely can also trigger a specific class from a specific .py file.
+Pipely can also trigger a specific class from a specific .py file without creating a config `.yaml` file. Simply point to a class you want to run:
 
 ```bash
 python -m pipely from-class <path/to/file.py>:<TestClass>
 ```
 
-Below is an example of a command that triggers a `printDone` class from [src/file4.py](example/src/file4.py) file.
+Below is an example of a command that triggers a `printDone` class from [example/src/file4.py](example/src/file4.py) file.
 
-```bash
+```bash /example
 python3 -m pipely from-class src/file4.py:printDone
 ```
 

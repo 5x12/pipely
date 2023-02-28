@@ -189,3 +189,4 @@ If your class needs to operate on a shared dictionary, the command `from-class` 
 ```bash
 python -m pipely from-class src/file4.py:printShared --context-path example_context.json
 ```
+
